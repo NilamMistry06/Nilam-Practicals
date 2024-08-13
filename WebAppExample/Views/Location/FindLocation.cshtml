@@ -1,0 +1,231 @@
+﻿@{
+    ViewBag.Title = "Location Page";
+}
+
+<h2>Location</h2>
+@using (Html.BeginForm("FindLocation", "Location"))
+{
+    @Html.AntiForgeryToken()
+    <div>
+        @Html.TextBox("textBoxValue", null, new { @class = "form-control" , @id = "txtIP" , @placeholder = "Enter text here" })
+    </div>
+    <div>
+        <input type="button" value="Get City" id="btnCity" class="btn btn-primary" />
+    </div>
+    <div>
+        <label id="lblCity"></label>
+    </div>
+
+
+    <div>
+        @Html.TextBox("textBoxValue", null, new { @class = "form-control" , @id = "txtSubstring" , @placeholder = "Enter text here" })
+    </div>
+    <div>
+        <input type="button" value="Get SubString" id="btnSubString" class="btn btn-primary" />
+    </div>
+    <div>
+        <label id="lblSubstring"></label>
+    </div>
+}
+@*@section Scripts {*@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#btnCity").click(function () {
+            var textBoxValue = $('#txtIP').val();
+            var token = $('input[name="__RequestVerificationToken"]').val();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("GetLocation", "Location")',
+                data: {
+                    ip: textBoxValue.trim(),
+                    __RequestVerificationToken: token
+                },
+                success: function (response) {
+                    $('#lblCity').text(response);
+                },
+                error: function (xhr, status, error) {
+                    console.log(error);
+                }
+            });
+        });
+
+        $("#btnSubString").click(function () {
+            var textBoxValue = $('#txtSubstring').val();
+            
+            //for (var i = 0; i < textBoxValue.length;i++)
+            //{
+            $('#lblSubstring').text(StringPeriods(textBoxValue));
+            //}
+
+
+            //var token = $('input[name="__RequestVerificationToken"]').val();
+            //$.ajax({
+            //    type: 'POST',
+            //    url: '@Url.Action("GetSubString", "Location")',
+            //    data: {
+            //        str: textBoxValue.trim(),
+            //        __RequestVerificationToken: token
+            //    },
+            //    success: function (response) {
+
+            //    },
+            //    error: function (xhr, status, error) {
+            //        console.log(error);
+            //    }
+            //});
+        });
+        ///get substring
+        function StringPeriods(str) {
+            if (str.length === 1) {
+                return "-1"; // If input string contains only a single character, return -1
+            }
+
+            let longestSubstring = "";
+
+            // Iterate over possible lengths of substring K
+            for (let len = 1; len <= str.length / 2; len++) {
+                let substring = str.substring(0, len);
+                let repeatedStr = substring.repeat(str.length / len);
+
+                if (repeatedStr === str && substring.length > longestSubstring.length) {
+                    longestSubstring = substring;
+                }
+            }
+
+            if (longestSubstring.length === 0) {
+                return "-1"; // If no such substring found, return -1
+            } else {
+                return longestSubstring;
+            }
+        }
+
+        // Test cases
+        console.log(StringPeriods("abcababcababcab")); // Output: "abcab"
+        console.log(StringPeriods("abababababab"));   // Output: "ababab"
+        console.log(StringPeriods("abcdefg"));
+
+        //function findRepeatedSubstrings(str) {
+        //    let n = str.length;
+        //    let suffixArray = buildSuffixArray(str);
+        //    let lcp = buildLCPArray(str, suffixArray);
+
+        //    let repeatedSubstrings = [];
+        //    let length = [];
+        //    for (let i = 0; i < n; i++) {
+        //        let len = lcp[i];
+        //        if (len > 0) {
+        //            let substring = str.substring(suffixArray[i], suffixArray[i] + len);
+                 
+        //            if (!repeatedSubstrings.includes(substring)) {
+        //                length.push(substring.length);
+        //                repeatedSubstrings.push(substring);
+        //            }
+        //        }
+        //    }
+        //    let maxWord = repeatedSubstrings[0]; // Initialize maxWord with the first word
+        //    for (let i = 1; i < repeatedSubstrings.length; i++) {
+        //        if (repeatedSubstrings[i].length > maxWord.length) {
+        //            maxWord = repeatedSubstrings[i]; // Update maxWord if current word is longer
+        //        }
+        //        if (!maxWord.includes(repeatedSubstrings[i])) {
+        //            return -1;
+        //        }
+        //    }
+        //    return maxWord;
+        //    //return repeatedSubstrings;
+        //}
+
+        //function buildSuffixArray(str) {
+        //    let n = str.length;
+        //    let suffixes = Array.from({ length: n }, (_, index) => index);
+
+        //    suffixes.sort((a, b) => {
+        //        while (a < n && b < n && str[a] === str[b]) {
+        //            a++;
+        //            b++;
+        //        }
+        //        return str.charCodeAt(a) - str.charCodeAt(b);
+        //    });
+
+        //    return suffixes;
+        //}
+
+        //function buildLCPArray(str, suffixArray) {
+        //    let n = str.length;
+        //    let rank = Array.from({ length: n }, () => 0);
+        //    let lcp = Array.from({ length: n }, () => 0);
+
+        //    for (let i = 0; i < n; i++) {
+        //        rank[suffixArray[i]] = i;
+        //    }
+
+        //    let h = 0;
+
+        //    for (let i = 0; i < n; i++) {
+        //        if (rank[i] > 0) {
+        //            let j = suffixArray[rank[i] - 1];
+        //            while (i + h < n && j + h < n && str[i + h] === str[j + h]) {
+        //                h++;
+        //            }
+        //            lcp[rank[i]] = h;
+        //            if (h > 0) {
+        //                h--;
+        //            }
+        //        }
+        //    }
+
+        //    return lcp;
+        //}
+    });
+</script>
+@*}*@
+
+@*https://localhost:7296/location/findlocation
+
+121.219.106.178 - Melbourne
+101.191.135.146 - Sydney
+120.61.116.135 - Mumbai*@
+
+
+
+@*toggle languages ["javascript","python"] on button click react*@
+@*
+
+                    //import React, { useState, useContext } from 'react';
+import { createRoot } from 'react-dom/client';
+
+const LanguageContext = React.createContext();
+const languages = ['JavaScript', 'Python'];
+
+function App() {
+  // implement Context here so can be used in child components
+  const [currentLanguageIndex, setcurrentLanguageIndex] = useState(0);
+    const toggleLanguage = () =>{
+    const newIndex = (currentLanguageIndex + 1) % languages.length;
+    setcurrentLanguageIndex(newIndex);
+  }
+  return (
+<LanguageContext.Provider value={{ languages, currentLanguageIndex, setcurrentLanguageIndex }}>
+    <MainSection />
+</LanguageContext.Provider>
+  );
+}
+function MainSection() {
+  const { languages, currentLanguageIndex, setcurrentLanguageIndex } = useContext(LanguageContext);
+  const toggleLanguage = () =>{
+    const newIndex = (currentLanguageIndex + 1) % languages.length;
+    setcurrentLanguageIndex(newIndex);
+  }
+  return (
+<div>
+    <p id="favoriteLanguage">favorite programing language: {languages[currentLanguageIndex]}</p>
+    <button id="changeFavorite" onClick={toggleLanguage}>toggle language</button>
+</div>
+  );
+}
+
+const container = document.getElementById(*@'root');
+const root = createRoot(container);
+root.render(
+<App />);

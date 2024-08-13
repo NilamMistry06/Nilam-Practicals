@@ -1,0 +1,19 @@
+﻿@model WebAppExample.Product
+
+@*Editor Templates*@
+<div>
+    <label>Name:</label>
+    @Html.TextBoxFor(m => m.Name)
+</div>
+<div>
+    <label>Price:</label>
+    @Html.TextBoxFor(m => m.Price)
+</div>
+
+@*Display Templates*@
+<div>
+    <strong>Name:</strong> @Model.Name
+</div>
+<div>
+    <strong>Price:</strong> @Model.Price
+</div>

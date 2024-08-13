@@ -1,0 +1,24 @@
+﻿@model WebAppExample.Product
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Product Details</title>
+</head>
+<body>
+    <h2>Product Details</h2>
+    <p>Id: @Model.Id</p>
+    <p>Name: @Model.Name</p>
+    <p>Price: @Model.Price</p>
+
+
+    @*Editor Templates*@
+    <h2>Edit Product</h2>
+    @Html.EditorForModel()
+
+    @*Display Templates*@
+    <h2>Product Details</h2>
+    @Html.DisplayForModel()
+
+</body>
+</html>

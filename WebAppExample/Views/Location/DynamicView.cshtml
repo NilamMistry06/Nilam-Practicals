@@ -1,0 +1,47 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic View</title>
+</head>
+<body>
+    <h2>About</h2>
+    <p>@ViewBag.Message</p>
+
+
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            debugger;
+            //Shift or rotate array elements
+            //var A = [ 3, 8, 9, 7, 6 ];
+            rotate([], 1);
+            function rotate(A, K) {
+                if (A.length == 0) return [];
+                let last;
+                for (var i = 1; i <= K; i++) {
+                    last = A.pop();
+                    A.unshift(last);
+                }
+                return A;
+            }
+
+            //OddOccurrencesInArray - Find value that occurs in odd number of elements.
+            OddOccurrencesInArray([9, 3, 9, 3, 9, 7, 9])
+            function OddOccurrencesInArray(A) {
+                //for(var i=0;i<A.length;i++)
+                //{
+                debugger;
+                const counts = {};
+                for (const num of A) {
+                    counts[num] = counts[num] ? counts[num] + 1 : 1;
+                }
+                for (const [key, value] of Object.entries(counts)) {
+                    if (value == 1) return key;
+                }
+            }
+        });
+    </script>
+</body>
+</html>
