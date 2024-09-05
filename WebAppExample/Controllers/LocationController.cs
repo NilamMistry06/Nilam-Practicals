@@ -231,7 +231,7 @@ namespace WebAppExample.Controllers
                 arrayVals.AddFirst(last);
             }
             int[] rotatedArray = new int[arrayVals.Count];
-            rotatedArray.CopyTo(arrayVals.ToArrayre(), 0);
+            rotatedArray.CopyTo(arrayVals.ToArray(), 0);
 
 
 
