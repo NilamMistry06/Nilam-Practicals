@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using System;
 using WebAppExample;
@@ -7,6 +8,13 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 
 builder.Services.AddControllersWithViews();//AddControllers();
+
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options =>
+                {
+                    options.LoginPath = "/Account/Login";  // Redirect to login page if not authenticated
+                    options.LogoutPath = "/Account/Logout"; // Redirect to logout page
+                });
 
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
@@ -68,9 +76,16 @@ app.MapGet("/person/{id}", (int id) => {
 });
 //Minimal API End
 
-app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Location}/{action=FindLocation}/{id?}");
+//app.MapControllerRoute(
+//    name: "default",
+//    pattern: "{controller=Location}/{action=FindLocation}/{id?}");
+
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllerRoute(
+        name: "default",
+        pattern: "{controller=Account}/{action=Login}");
+});
 
 app.Run();
 
